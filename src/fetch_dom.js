@@ -34,46 +34,40 @@ const getMeteoJson = async (city) => {
         .then(response => {
             if (response.status === 200) {
                 return response.json();
-            } else {
-                return response;
-            }
+            } 
+            return response;
         }).catch(error => {
             throw new Error("Le serveur ne répond pas");
         });
 }
 
 //écouteur d'évenement
-btCharger.addEventListener('click', () => {
-
+btCharger.addEventListener('click', ()=> {
+    
     const titre1 = document.querySelector('#id_title1');
     const titre2 = document.querySelector('#id_title2');
     const titre3 = document.querySelector('#id_title3');
-
+    
     //tester si city est non vide
     if (city.value != "") {
         getMeteoJson(city.value).then(data => {
-            if (data.status !== 200) {
-                titre1.textContent = "La ville n'existe pas";
+            if (data.status === 404) {
+                titre1.textContent = "La ville n'est pas définie";
                 titre2.textContent = "";
-                titre3.textContent = "";
+                titre3.textContent = "";        
+                
             } else {
                 titre1.textContent = `Ville : ${data.name}`;
                 titre2.textContent = `Température : ${data.main.temp.toFixed(2)} ° `;
                 titre3.textContent = `Temps : ${data.weather[0].description}`;
-                //Test si le dernier enfant de box est un titre H2
-                if (box.lastChild.nodeName === 'H2') {
-                    const icon = document.createElement('img');
-                    icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                    icon.style.width = '90px';
-                    icon.style.height = '90px';
-                    icon.style.alignSelf = 'start';
-                    box.appendChild(icon);
-                }
-                //Sinon on met à jour la source de l'image
-                else {
-                    box.lastChild.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                }
+                const icon = document.createElement('img');
+                icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                icon.style.width = '90px';
+                icon.style.height = '90px';
+                icon.style.alignSelf = 'start';
+                box.appendChild(icon);
             }
         });
     }
+
 });
