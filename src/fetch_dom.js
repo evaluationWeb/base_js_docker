@@ -60,14 +60,20 @@ btCharger.addEventListener('click', ()=> {
                 titre1.textContent = `Ville : ${data.name}`;
                 titre2.textContent = `Température : ${data.main.temp.toFixed(2)} ° `;
                 titre3.textContent = `Temps : ${data.weather[0].description}`;
-                const icon = document.createElement('img');
-                icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-                icon.style.width = '90px';
-                icon.style.height = '90px';
-                icon.style.alignSelf = 'start';
-                box.appendChild(icon);
+                                //Test si le dernier enfant de box est un titre H2
+                if (box.lastChild.nodeName === 'H2') {
+                    const icon = document.createElement('img');
+                    icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                    icon.style.width = '90px';
+                    icon.style.height = '90px';
+                    icon.style.alignSelf = 'start';
+                    box.appendChild(icon);
+                }
+                //Sinon on met à jour la source de l'image
+                else {
+                    box.lastChild.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                }
             }
         });
     }
-
 });
